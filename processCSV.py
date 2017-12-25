@@ -32,7 +32,8 @@ with open('lokale2.csv','r') as csvfile:
 			
 			pow1 =0 #powierzchnia w postaci stringa
 			pow1str = str(row[4])
-			
+		
+		#powierzchnia2 to powierzchnia do aneksu	
 		try:
 			pow2=float(row[5].replace(',','.'))
 		except ValueError:
@@ -48,61 +49,66 @@ with open('lokale2.csv','r') as csvfile:
 			czynsz09=float(row[8].replace(',','.'))
 		except ValueError:
 			czynsz09 =0 
-			if(row[8]): #in case there is a text info
+			if("".join(row[8].split())): #in case there is a text info
 				czynszStr = czynszStr + str("2009: "+row[8]+"\n")
 		
 		try:
 			czynsz10=float(row[9].replace(',','.'))
 		except ValueError:
 			czynsz10 =0
-			if(row[9]): #in case there is a text info 
+			if("".join(row[9].split())): #in case there is a text info 
 				czynszStr = czynszStr + str("2010: "+row[9]+"\n")
 		
 		try:
 			czynsz11=float(row[10].replace(',','.'))
 		except ValueError:
 			czynsz11 =0
-			if(row[10]): #in case there is a text info 
+			if("".join(row[10].split())): #in case there is a text info 
 				czynszStr = czynszStr + str("2011: "+row[10]+"\n")
 		
 		try:
 			czynsz12=float(row[11].replace(',','.'))
 		except ValueError:
 			czynsz12 =0
-			if(row[11]): #in case there is a text info 
+			if("".join(row[11].split())): #in case there is a text info 
 				czynszStr = czynszStr + str("2012: "+row[11]+"\n")
 		
 		try:
 			czynsz13=float(row[12].replace(',','.'))
 		except ValueError:
 			czynsz13 =0
-			if(row[12]): #in case there is a text info 
+			if("".join(row[12].split())): #in case there is a text info 
 				czynszStr = czynszStr + str("2013: "+row[12]+"\n")
 		try:
 			czynsz14=float(row[13].replace(',','.'))
 		except ValueError:
 			czynsz14 =0
-			if(row[13]): #in case there is a text info 
+			if("".join(row[13].split())): #in case there is a text info 
 				czynszStr = czynszStr + str("2014: "+row[13]+"\n")
 		try:
 			czynsz15=float(row[14].replace(',','.'))
 		except ValueError:
 			czynsz15 =0
-			if(row[14]): #in case there is a text info 
+			if("".join(row[14].split())): #in case there is a text info 
 				czynszStr = czynszStr + str("2015: "+row[14]+"\n")
 		try:
 			czynsz16=float(row[15].replace(',','.'))
 		except ValueError:
 			czynsz16 =0
-			if(row[15]): #in case there is a text info 
+			if("".join(row[15].split())): #in case there is a text info 
 				czynszStr = czynszStr + str("2016: "+row[15]+"\n")						
 		try:
 			czynsz17=float(row[16].replace(',','.'))
 		except ValueError:
 			czynsz17 =0
-			if(row[16]): #in case there is a text info 
+			if("".join(row[16].split())): #in case there is a text info 
 				czynszStr = czynszStr + str("2017: "+row[16]+"\n")
-		
+				
+		dataStr=row[17]
+		data1="" #zabezpieczenei przed poprzednia wartościa
+		data2=""
+		dataPocz=""
+		dataKoncowa =""
 		daty=row[17].split('-')
 		if(daty.__len__()>0):
 			dataPocz=daty[0].replace(" ", "").replace("od","").replace("dnia","")
@@ -129,23 +135,22 @@ with open('lokale2.csv','r') as csvfile:
 		waloryzacja = str(row[20]);
 		
 		#tu można zrobić dodatkową flage do bazy SQL
-		#if((waloryzacja.lower()).find("zwolnienie")>-1):
-		#	print("Zwolnienie "+str(i)+nazwa_podmiotu)
+		typ=0
+		if((waloryzacja.lower()).find("zwolnienie")>-1):
+			typ=2
 		
-		#if(waloryzacja.lower().find("jednostka")>-1):
-		#	print("jednostka "+str(i)+nazwa_podmiotu)
+		if(waloryzacja.lower().find("jednostka")>-1):
+			typ=1 #docelowo to powinno iść z bazy 
 		
-		#if(i>500):
-		#	break
-		'''
-
-		
-'''
-	#	cursor.execute('''INSERT INTO nieruchomosci1(ADRES, nazwa,przeznaczenie,powierzchnia1,info,czynsz)
-     #             VALUES(?,?,?,?,?,?)''', (adres,nazwa_podmiotu,przezna,pow2,info,czynsz17))
-	#	db.commit()
+		cursor.execute('''INSERT INTO nieruchomosci1(ADRES, nazwa,przeznaczenie,powierzchnia1,powierzchnia2,info,usyt,
+					czynsz09,czynsz10,czynsz11,czynsz12,czynsz13,czynsz14,czynsz15,czynsz16,czynsz17,czynszStr,
+					dataPocz,dataKonc,dataStr,umowa,stanPrawny,waloryzacja,typSpecjalny) 
+                  VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)''', (adres,nazwa_podmiotu,przezna,pow1,pow2,info,usyt,
+                  czynsz09,czynsz10,czynsz11,czynsz12,czynsz13,czynsz14,czynsz15,czynsz16,czynsz17,czynszStr,
+                  data1,data2,dataStr,umowa,stanPrawny,waloryzacja,typ))
+		db.commit()
 		
 		
-	#	print(str(i)+" "+adres+"\t added")
+		print(str(i)+" "+adres+"\t added")
 
 	
