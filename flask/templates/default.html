@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.4.2/css/ol.css" type="text/css">
+    <style>
+      .map {
+        height: 600px;
+        width: 50%;
+      }
+
+	table, th, td {
+		border: 1px solid black;
+	}
+	th {
+	font: bold 11px "Trebuchet MS", Verdana, Arial, Helvetica,
+	sans-serif;
+	color: #6D929B;
+	border-right: 1px solid #C1DAD7;
+	border-bottom: 1px solid #C1DAD7;
+	border-top: 1px solid #C1DAD7;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	text-align: left;
+	padding: 6px 6px 6px 12px;
+	background: #CAE8EA url(images/bg_header.jpg) no-repeat;
+}
+
+th.nobg {
+	border-top: 0;
+	border-left: 0;
+	border-right: 1px solid #C1DAD7;
+	background: none;
+}
+th.spec {	
+	border-left: 1px solid #C1DAD7;
+	border-top: 0;
+	background: #fff url(images/bullet1.gif) no-repeat;
+	font: bold 10px "Trebuchet MS", Verdana, Arial, Helvetica,
+	sans-serif;
+}
+
+th.specalt {
+	border-left: 1px solid #C1DAD7;
+	border-top: 0;
+	background: #f5fafa url(images/bullet2.gif) no-repeat;
+	font: bold 10px "Trebuchet MS", Verdana, Arial, Helvetica,
+	sans-serif;
+	color: #B4AA9D;
+}
+td {
+	border-right: 1px solid #C1DAD7;
+	border-bottom: 1px solid #C1DAD7;
+	background: #fff;
+	padding: 6px 6px 6px 12px;
+	color: #6D929B;
+}
+
+
+td.alt {
+	background: #F5FAFA;
+	color: #B4AA9D;
+}
+    </style>
+    <script src="https://openlayers.org/en/v4.4.2/build/ol.js" type="text/javascript"></script>
+    <script type="text/javascript">
+		var arr2 = {{ rows|tojson|safe }}
+	</script>
+  
+  
+    <title>Mapa nieruchomości</title>
+  </head>
+
+{% if rows %}
+<!--
+	{% for row in rows %}
+		{{ row[3] }}<BR>
+	{% endfor %}
+	-->
+	
+{% else %}
+  <h1>Hello, World!</h1>
+{% endif %}
+
+
+  <body>
+    <h2>Mapa nieruchomości</h2>
+    <div id="map" class="map"></div>
+    
+    <div id="docs">
+		<p id="range">Range:</p>	
+		 <p id="result">Aby poznać szczegóły, trzymając <B>Ctrl</B> zaznacz myszką wybrane nieruchomości</p>
+    </div>    
+    <table id="resultsTable">
+		<th>
+			Adres
+			<td>Nazwa</td>
+			<td>Przeznaczenie</td>
+			<td>Powierzchnia</td>
+			<td>Czynsz</td>
+			<td>Informacja</td>
+		</th>
+		
+    </table>
+    <script type="text/javascript">
+
+    console.log(arr2);
+    </script>
+    <script type="text/javascript" src="http://hydrologia.net/~marcin/static/js/generuj_mape.js"> </script>
+    
+  </body>
+</html>
