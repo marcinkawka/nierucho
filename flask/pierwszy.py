@@ -1,9 +1,12 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*- 
+
 from random import randint
 from flask import Flask
 from flask import render_template
 import sqlite3
 
-baza="../nierucho.sqlite"
+baza="/home/marcin/nierucho/nierucho.sqlite"
     
 app = Flask(__name__)
 
@@ -12,13 +15,12 @@ app = Flask(__name__)
 @app.route('/hello/<name>')
 
 
-
-
-	
 def hello(name=None):
 	all_rows=get_nierucho()
 	return render_template('default.html',rows=all_rows)
-
+#just an apache test if WSGI works well
+#        return render_template('test.html')
+        
 def get_nierucho():
 	db = sqlite3.connect(baza)
 	cursor = db.cursor()
@@ -32,6 +34,6 @@ def get_nierucho():
 	all_rows = cursor.fetchall()
 	return all_rows;
 	
-if __name__ == "__main__":
-    app.run(host='127.0.0.1')
+#if __name__ == "__main__":
+#    app.run(host='127.0.0.1')
 
