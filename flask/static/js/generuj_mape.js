@@ -46,50 +46,39 @@ for (var i = 0; i < arr["nierucho"].length; i++){
 	iconFeatures.push(iconFeature);
 }
 */
- var styleKeys = [ 'triangle', 'square'];
- 
- var stroke = new ol.style.Stroke({color: 'black', width: 2});
-var fill = new ol.style.Fill({color: 'red'});
 
-var styles = {
-        'square': new ol.style.Style({
-          image: new ol.style.RegularShape({
-            fill: fill,
+ 
+var stroke = new ol.style.Stroke({color: 'black', width: 0.1});
+var fill =   new ol.style.Fill({color: 'red'});
+
+
+
+var circleStyle =  new ol.style.Style({
+			image: new ol.style.Circle({
+			fill: fill,
             stroke: stroke,
-            points: 4,
-            radius: 10,
-            angle: Math.PI / 4
-          })
-        }),
-        'triangle': new ol.style.Style({
-          image: new ol.style.RegularShape({
-            fill: fill,
-            stroke: stroke,
-            points: 3,
-            radius: 10,
-            rotation: Math.PI / 4,
-            angle: 0
-          })
-        })};
-function getStyle2(rad){
+            radius: 5
+			})
+		});
+			       
+function getStyle2(czynsz){
 	return new ol.style.Style({
+			image: new ol.style.Circle({
+			fill: new ol.style.Fill({color: [50+0.5*czynsz ,100+0.5*czynsz ,0.5*czynsz]}),
+            stroke: stroke,
+            radius: 5+czynsz/10
+			})
+		})
+	
+		/*
           image: new ol.style.RegularShape({
             fill: new ol.style.Fill({color: [0,255,0]}),
             stroke: stroke,
             points: 4,
             radius: rad,
             angle: Math.PI / 4
-          })})
+          })})*/
 }        
-var iconStyle = new ol.style.Style({
-  image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
-    anchor: [0.5, 50],
-    anchorXUnits: 'fraction',
-    anchorYUnits: 'pixels',
-    opacity: 0.75,
-    src: 'http://hydrologia.net/~marcin/static/png/pointMarker.png'
-  }))
-});
 
 
 for (var i = 0; i < arr2.length; i++){
@@ -97,8 +86,7 @@ for (var i = 0; i < arr2.length; i++){
 
 	if(obj[1]!=null || obj[2]!=null){ //na wypadek pustych współrzędnych
 		var iconFeature = new ol.Feature({
-			geometry: new ol.geom.Point(ol.proj.transform([obj[1],obj[2]], 'EPSG:4326',     
-				'EPSG:3857')),
+			geometry: new ol.geom.Point(ol.proj.transform([obj[1],obj[2]], 'EPSG:4326', 'EPSG:3857')),
 			adres: obj[3],
 			czynsz09: obj[4],
 			czynsz10: obj[5],
@@ -122,12 +110,10 @@ for (var i = 0; i < arr2.length; i++){
 			info: obj[22],
 			
 		});
-		/*var style=styles[styleKeys[Math.floor(Math.random() * 2)]];
-		console.log(style.getImage().getRadius());
-		style.getImage().radius=(Math.floor(Math.random() * 100))
-			console.log(style.getImage().getRadius());
-			*/
-		iconFeature.setStyle(getStyle2(iconFeature.get('czynsz17')/10+5));
+		/* Styl punktów narzucany jest per warstwa, tu tylko ustawiany jest promień
+		 * 
+		 * */
+		iconFeature.setStyle(getStyle2(iconFeature.get('czynsz17')));
 		iconFeatures.push(iconFeature);
 	}
 	/*,
@@ -143,7 +129,7 @@ var vectorSource = new ol.source.Vector({
 
 var vectorLayer = new ol.layer.Vector({
   source: vectorSource,
-  style: styles['square'] //iconStyle
+  style: circleStyle //iconStyle
 });
 
 
