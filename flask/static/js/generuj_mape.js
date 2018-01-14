@@ -14,7 +14,15 @@ var circleStyle =  new ol.style.Style({
             radius: 5
 			})
 		});
-			       
+function getStyle2Highlight(czynsz){
+	return new ol.style.Style({
+			image: new ol.style.Circle({
+			fill: new ol.style.Fill({color: [100+0.5*czynsz , 50+0.5*czynsz ,0.5*czynsz]}),
+            stroke: stroke,
+            radius: 5+czynsz/10
+			})
+		})
+}					       
 function getStyle2(czynsz){
 	return new ol.style.Style({
 			image: new ol.style.Circle({
@@ -132,27 +140,19 @@ map.addInteraction(select);
       var infoBox = document.getElementById('result');
       var resultsTable = document.getElementById('resultsTable');
       
-      selectedFeatures.on(['add', 'remove'], function() {
+      selectedFeatures.on(['add'], function() {
         var names = selectedFeatures.getArray().map(function(feature) {
-          //console.log(feature.get('adres'));
-          //console.log(feature.get('nazwa'));
           
-          //return feature.get('atrybut1');
-    
-          return [feature.get('adres'),feature.get('nazwa'),feature.get('przeznaczenie'),
-          feature.get('powierzchnia1'),feature.get('czynsz17'),feature.get('info')
+          feature.setStyle(getStyle2Highlight(feature.get('czynsz17')));
+		  return [feature.get('adres'),feature.get('nazwa'),feature.get('przeznaczenie'),
+			feature.get('powierzchnia1'),feature.get('czynsz17'),feature.get('info')
           ];
         });
+      
         
         if (names.length > 0) {
-        //  infoBox.innerHTML = names.join(', ');
-         // console.log(selectedFeatures.getArray())
-           //to jest wywoływane dla każdego elementu, więc dodajemy tylko ostatni
           element=names[names.length-1];
-          //console.log();
-          
           row=resultsTable.insertRow(-1);
-          
           cell=row.insertCell(-1);
           cell.innerHTML=element[0];
           cell=row.insertCell(-1);
@@ -166,7 +166,45 @@ map.addInteraction(select);
           cell=row.insertCell(-1);
           cell.innerHTML=element[5];
         } else {
-          infoBox.innerHTML = 'Aby poznać szczegóły, trzymając <B>Ctrl</B> zaznacz myszką wybrane nieruchomości';
+          infoBox.innerHTML = 'Aby poznać szczegóły, trzymając <B>Ctrl</B> zaznacz myszką wybrane nieruchomości na mapce powyżej';
+        
+          var tableRows = resultsTable.getElementsByTagName('tr');
+          var rowCount = tableRows.length;
+          var tableHeaderRowCount = 1;
+          
+          for (var i = tableHeaderRowCount; i < rowCount; i++) {
+                 resultsTable.deleteRow(tableHeaderRowCount);
+            }
+        }
+      });
+      
+       selectedFeatures.on(['remove'], function() {
+        var names = selectedFeatures.getArray().map(function(feature) {
+          
+          feature.setStyle(getStyle2(feature.get('czynsz17')));
+		  return [feature.get('adres'),feature.get('nazwa'),feature.get('przeznaczenie'),
+			feature.get('powierzchnia1'),feature.get('czynsz17'),feature.get('info')
+          ];
+        });
+      
+        
+        if (names.length > 0) {
+          element=names[names.length-1];
+          row=resultsTable.insertRow(-1);
+          cell=row.insertCell(-1);
+          cell.innerHTML=element[0];
+          cell=row.insertCell(-1);
+          cell.innerHTML=element[1];
+          cell=row.insertCell(-1);
+          cell.innerHTML=element[2];
+          cell=row.insertCell(-1);
+          cell.innerHTML=element[3];
+          cell=row.insertCell(-1);
+          cell.innerHTML=element[4];
+          cell=row.insertCell(-1);
+          cell.innerHTML=element[5];
+        } else {
+          infoBox.innerHTML = 'Aby poznać szczegóły, trzymając <B>Ctrl</B> zaznacz myszką wybrane nieruchomości na mapce powyżej';
         
           var tableRows = resultsTable.getElementsByTagName('tr');
           var rowCount = tableRows.length;
@@ -183,6 +221,7 @@ function log(msg) {
 //    result.innerHTML += msg + "<br>";
 }
 function logRange(bottomLeft,topRight){
+	// no longer in use
 	document.getElementById('range').innerHTML =bottomLeft[0].toFixed(4)+" "+
 	bottomLeft[1].toFixed(4)+" "+
 	topRight[0].toFixed(4)+" "+
@@ -198,7 +237,7 @@ function onMoveEnd(evt) {
             'EPSG:3857', 'EPSG:4326');
         var topRight = ol.proj.transform(ol.extent.getTopRight(extent),
             'EPSG:3857', 'EPSG:4326');
-		logRange(bottomLeft,topRight);
+		
 	
 }
 
