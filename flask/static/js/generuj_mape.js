@@ -1,6 +1,6 @@
 
 var iconFeatures=[];
-
+var lastSelection=[];
  
 var stroke = new ol.style.Stroke({color: 'black', width: 0.1});
 var fill =   new ol.style.Fill({color: 'red'});
@@ -148,10 +148,14 @@ map.addInteraction(select);
 			feature.get('powierzchnia1'),feature.get('czynsz17'),feature.get('info')
           ];
         });
-      
-        
+              
+        for(let ff of selectedFeatures.getArray())
+        {	// dodawanie do tablicy zaznaczonych
+          lastSelection.push(ff);
+        }
         if (names.length > 0) {
           element=names[names.length-1];
+          //dodawanie do tabelki
           row=resultsTable.insertRow(-1);
           cell=row.insertCell(-1);
           cell.innerHTML=element[0];
@@ -165,16 +169,6 @@ map.addInteraction(select);
           cell.innerHTML=element[4];
           cell=row.insertCell(-1);
           cell.innerHTML=element[5];
-        } else {
-          infoBox.innerHTML = 'Aby poznać szczegóły, trzymając <B>Ctrl</B> zaznacz myszką wybrane nieruchomości na mapce powyżej';
-        
-          var tableRows = resultsTable.getElementsByTagName('tr');
-          var rowCount = tableRows.length;
-          var tableHeaderRowCount = 1;
-          
-          for (var i = tableHeaderRowCount; i < rowCount; i++) {
-                 resultsTable.deleteRow(tableHeaderRowCount);
-            }
         }
       });
       
@@ -186,25 +180,12 @@ map.addInteraction(select);
 			feature.get('powierzchnia1'),feature.get('czynsz17'),feature.get('info')
           ];
         });
-      
-        
-        if (names.length > 0) {
-          element=names[names.length-1];
-          row=resultsTable.insertRow(-1);
-          cell=row.insertCell(-1);
-          cell.innerHTML=element[0];
-          cell=row.insertCell(-1);
-          cell.innerHTML=element[1];
-          cell=row.insertCell(-1);
-          cell.innerHTML=element[2];
-          cell=row.insertCell(-1);
-          cell.innerHTML=element[3];
-          cell=row.insertCell(-1);
-          cell.innerHTML=element[4];
-          cell=row.insertCell(-1);
-          cell.innerHTML=element[5];
-        } else {
-          infoBox.innerHTML = 'Aby poznać szczegóły, trzymając <B>Ctrl</B> zaznacz myszką wybrane nieruchomości na mapce powyżej';
+        for(let element of lastSelection){ //z iconFeatures jest skuteczne ale wolne.
+      //    console.log(element.get('adres'));
+          element.setStyle(getStyle2(element.get('czynsz17')));
+          
+        }
+        infoBox.innerHTML = 'Aby poznać szczegóły, trzymając <B>Ctrl</B> zaznacz myszką wybrane nieruchomości na mapce powyżej';
         
           var tableRows = resultsTable.getElementsByTagName('tr');
           var rowCount = tableRows.length;
@@ -213,7 +194,7 @@ map.addInteraction(select);
           for (var i = tableHeaderRowCount; i < rowCount; i++) {
                  resultsTable.deleteRow(tableHeaderRowCount);
             }
-        }
+       
       });
       
 function log(msg) {
