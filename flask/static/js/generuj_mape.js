@@ -27,19 +27,20 @@ function getStyle2(czynsz){
 	return new ol.style.Style({
 			image: new ol.style.Circle({
 			fill: new ol.style.Fill({color: [50+0.5*czynsz ,100+0.5*czynsz ,0.5*czynsz]}),
-            stroke: stroke,
-            radius: 5+czynsz/10
-			})
-		})
-	
-		/*
-          image: new ol.style.RegularShape({
-            fill: new ol.style.Fill({color: [0,255,0]}),
-            stroke: stroke,
-            points: 4,
-            radius: rad,
-            angle: Math.PI / 4
-          })})*/
+			stroke: stroke,
+			radius: 5+czynsz/10
+                  })
+        })	
+}        
+
+function getStylePowierzchnia(pow){
+	return new ol.style.Style({
+			image: new ol.style.Circle({
+			fill: new ol.style.Fill({color: [10+0.2*pow ,200-0.5*pow ,30+0.5*pow]}),
+			stroke: stroke,
+			radius: 5+pow/10
+                  })
+        })	
 }        
 
 
@@ -76,6 +77,7 @@ for (var i = 0; i < arr2.length; i++){
 		 * 
 		 * */
 		iconFeature.setStyle(getStyle2(iconFeature.get('czynsz17')));
+		//iconFeature.setStyle(getStylePowierzchnia(iconFeature.get('powierzchnia1')/7));
 		iconFeatures.push(iconFeature);
 	}
 	/*,

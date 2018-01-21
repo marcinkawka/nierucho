@@ -8,7 +8,7 @@
 
 		<link rel=stylesheet type=text/css href="{{url_for('static', filename='css/main.css') }}">
 		<link rel=stylesheet type=text/css href="{{url_for('static', filename='css/mapa.css') }}">
-		
+
 		<script src="https://openlayers.org/en/v4.4.2/build/ol.js" type="text/javascript"></script>
     
       <script type="text/javascript">
@@ -19,16 +19,7 @@
     <title>Mapa nieruchomości</title>
   </head>
 
-{% if rows %}
-<!--
-	{% for row in rows %}
-		{{ row[3] }}<BR>
-	{% endfor %}
-	-->
-	
-{% else %}
-  <h1>Hello, World!</h1>
-{% endif %}
+
 
 
   <body>
@@ -41,18 +32,17 @@
 		<!-- Nav -->
 			<nav id="menu">
 				<ul class="links">
-					<li><a href="index.html">Według Czynszu</a></li>
-					<li><a href="generic.html">Według Powierzchni</a></li>
-					<li><a href="elements.html">Według Zakończenia umowy</a></li>
+					<li><a href="http://nieruchomosci.hydrologia.net/">Według Czynszu</a></li>
+					<li><a href="http://nieruchomosci.hydrologia.net/?powierzchnia">Według Powierzchni</a></li>
+					<li><a href="http://nieruchomosci.hydrologia.net/?umowa">Według Zakończenia umowy</a></li>
 				</ul>
 			</nav>
 			<!-- Banner -->
 			<section id="banner">
 				<div class="inner">
 					<header>
-						<h1>Nieruchomości na Ochocie</h1>
-						<p>Dane pochodzą z ....<br />
-						Mają charakter informacji publicznej</p>
+						<h1>Nieruchomości wynajmowane na Ochocie</h1>
+						<p>Dane mają charakter informacji publicznej</p>
 					</header>
 					<a href="#main" class="button big scrolly">Pokaż</a>
 				</div>
@@ -73,7 +63,7 @@
 
     <!-- Table -->
     <div class="table-wrapper">
-    <table id="resultsTable" class="alt">
+    <table id="resultsTable" >
 		<thead><tr>
 			<th>Adres</th>
 			<th>Nazwa</th>
