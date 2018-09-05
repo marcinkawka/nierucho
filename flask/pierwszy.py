@@ -2,13 +2,13 @@
 # -*- coding: utf-8 -*- 
 
 from random import randint
-from flask import Flask
+from flask import Flask,url_for
 from flask import render_template
 import sqlite3
 
 baza="/home/marcin/nierucho/nierucho.sqlite"
     
-app = Flask(__name__)
+app = Flask(__name__,static_url_path='/static')
 
 @app.route('/')
 @app.route('/hello')
@@ -17,7 +17,8 @@ app = Flask(__name__)
 
 def hello(name=None):
 	all_rows=get_nierucho()
-	return render_template('default.html',rows=all_rows)
+       	return render_template('default.html',rows=all_rows)
+
 #just an apache test if WSGI works well
 #        return render_template('test.html')
         
